@@ -42,7 +42,7 @@ classDiagram
           Controller "1" *-- "1" Model : association
     Model "1" *-- "1..n" Coche : association
     Observable <|-- Model
-  
+    
 ```
 
 ---
@@ -70,4 +70,57 @@ sequenceDiagram
     deactivate View
 ```
 
-El mismo diagrama con los nombres de los métodos.
+El mismo diagrama con los nombres de los métodos
+
+```mermaid
+sequenceDiagram
+    participant View
+    box gray Controlador
+    participant Controller
+    participant ObserverVelocidad
+    end
+    participant Model
+
+    Controller->>Model: cambiarVelocidad()
+    activate Model
+    Model->>ObserverVelocidad: update()
+    deactivate Model
+    activate ObserverVelocidad
+    ObserverVelocidad->>+View: muestraVelocidad
+    deactivate ObserverVelocidad
+    activate View
+    View->>-View: sout
+    deactivate View
+```
+
+Si sumamos otro observador, entonces el `update()` será en paralelo (**par**)
+
+a todos los Observadores
+
+```mermaid
+sequenceDiagram
+    participant View
+    box gray Controlador
+    participant Controller
+    participant ObserverVelocidad
+    participant ObserverOtro
+    end
+    participant Model
+
+    Controller->>Model: cambiarVelocidad()
+    activate Model
+    par notificacion
+        Model->>ObserverVelocidad: update()
+    and notificacion
+        Model->>ObserverOtro: update()
+        end
+    deactivate Model
+    activate ObserverVelocidad
+    activate ObserverOtro
+    ObserverVelocidad->>+View: muestraVelocidad
+    deactivate ObserverVelocidad
+    ObserverOtro->>-ObserverOtro: sout
+    activate View
+    View->>-View: sout
+    deactivate View
+```
