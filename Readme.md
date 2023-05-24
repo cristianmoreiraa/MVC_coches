@@ -1,15 +1,26 @@
-# Arquitectura MVC
+# Arquitectura MVC con Observer
 
-Aplicación que trabaja con objetos coches, modifica la velocidad y la muestra
+En esta rama utilizaremos el patrón Observer
+
+Los cambios de la velocidad que se hagan en el model
+serán observados por el Controller
+
+Para notificar a los observadores hacemos dos pasos
+
+* Actualizamos el estado a 'algo a cambiado' con `setChanged()`
+* Notificamos a los observadores `notifyObservers(valor)`
+
+De esta manera se *dispara* en todos los observadores el método `update()`
 
 ---
 
 ## Diagrama de clases:
 
-
 ```mermaid
 classDiagram
-    class Coche {
+    class Observable {
+        }
+        class Coche {
         String: matricula
         String: modelo
         Integer: velocidad
@@ -17,108 +28,46 @@ classDiagram
       class Controller{
           +main()
       }
-      class View {+muestraVelocidad(String, Integer)}
       class Model {
           ArrayList~Coche~: parking
           +crearCoche(String, String, String)
           +getCoche(String)
           +cambiarVelocidad(String, Integer)
-          +subirVelocidad(String, Integer)
-          +bajarVelocidad(String, Integer)
           +getVelocidad(String)
       }
-    Controller "1" *-- "1" Model : association
-    Controller "1" *-- "1" View : association
+      class ObserverVelocidad {
+          +update()
+          }
+          Controller "1" *-- "1" ObserverVelocidad: association
+          Controller "1" *-- "1" Model : association
     Model "1" *-- "1..n" Coche : association
+    Observable <|-- Model
   
 ```
-
 
 ---
 
 ## Diagrama de Secuencia
 
-Ejemplo básico del procedimiento, sin utilizar los nombres de los métodos
-
-
-```mermaid
-sequenceDiagram
-    participant Model
-    participant Controller
-    participant View
-    Controller->>Model: Puedes crear un coche?
-    activate Model
-    Model-->>Controller: Creado!
-    deactivate Model
-    Controller->>+View: Muestra la velocidad, porfa
-    activate View
-    View->>-View: Mostrando velocidad
-    View-->>Controller: Listo!
-    deactivate View
-    Controller->>Model: Puedes aumenterle la velocidad?
-    activate Model
-    Model-->>Controller: Subida!
-    deactivate Model
-    Controller->>+View: Muestra la velocidad, porfa
-    activate View
-    View->>-View: Mostrando velocidad
-    View-->>Controller: Listo!
-    deactivate View
-    Controller->>Model: Puedes bajarle la velocidad?
-    activate Model
-    Model-->>Controller: Bajada!
-    deactivate Model
-    Controller->>+View: Muestra la velocidad, porfa
-    activate View
-    View->>-View: Mostrando velocidad
-    View-->>Controller: Listo!
-    deactivate View
-```
-
-
-El mismo diagrama con los nombres de los métodos:
-
+Que ocurre cuando se cambia la velocidad
 
 ```mermaid
 sequenceDiagram
-    participant Model
-    participant Controller
     participant View
-    Controller->>Model: crearCoche("LaFerrari", "SBC 1234")
-    activate Model
-    Model-->>Controller: Coche
-    deactivate Model
-    Controller->>+View: muestraVelocidad("SBC 1234", velocidad)
-    activate View
-    View->>-View: System.out.println()
-    View-->>Controller: boolean
-    deactivate View
-    Controller->>Model: cambiarVelocidad("SBC 1234", velocidadSubir)
-    activate Model
-    Model-->>Controller: Velocidad
-    deactivate Model
-    Controller->>+View: muestraVelocidad("SBC 1234", velocidad)
-    activate View
-    View->>-View: System.out.println()
-    View-->>Controller: boolean
-    deactivate View
-    Controller->>Model: subirVelocidad("SBC 1234", velocidadSubir)
-    activate Model
-    Model-->>Controller: Velocidad
-    deactivate Model
-    Controller->>+View: muestraVelocidad("SBC 1234", velocidad)
-    activate View
-    View->>-View: System.out.println()
-    View-->>Controller: boolean
-    deactivate View
-    Controller->>Model: bajarVelocidad("SBC 1234", velocidadSubir)
-    activate Model
-    Model-->>Controller: Velocidad
-    deactivate Model
-    Controller->>+View: muestraVelocidad("SBC 1234", velocidad)
-    activate View
-    View->>-View: System.out.println()
-    View-->>Controller: boolean
-    deactivate View
+    participant Controller
+    participant ObserverVelocidad
+    participant Model
   
+    Controller->>Model: cambia la velociad, porfa
+    activate Model
+    Model->>ObserverVelocidad: Notificacion de cambio de velocidad
+    deactivate Model
+    activate ObserverVelocidad
+    ObserverVelocidad->>+View: Muestra la velocidad, porfa
+    deactivate ObserverVelocidad
+    activate View
+    View->>-View: Mostrando velocidad
+    deactivate View
 ```
+
+El mismo diagrama con los nombres de los métodos
