@@ -14,12 +14,6 @@ public class Model {
         parking.add(aux);
         return aux;
     }
-
-    /**
-     * @param matricula
-     * @param v nueva velocidad
-     * @return velocidad modificada
-     */
     public Integer cambiarVelocidad(String matricula, Integer v) {
         // busca el coche
         getCoche(matricula).velocidad = v;

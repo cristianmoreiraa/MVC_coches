@@ -8,6 +8,7 @@ public class Dialog extends JDialog{
         setContentPane(panel1);
         setModal(true);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
+        setLocationRelativeTo(null);
     }
 
     public static void vDialogo(String mensajito){
@@ -15,5 +16,6 @@ public class Dialog extends JDialog{
         dialogo.pack();
         dialogo.eVelocidad.setText(mensajito);
         dialogo.setVisible(true);
+        dialogo.setLocationRelativeTo(null);
     }
 }
