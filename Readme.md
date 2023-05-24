@@ -70,4 +70,4 @@ sequenceDiagram
     deactivate View
 ```
 
-El mismo diagrama con los nombres de los métodos
+El mismo diagrama con los nombres de los métodos.
