@@ -9,7 +9,7 @@ En esta rama se han añadido los eventos en la interfaz de usuario (IU).
 
 ### Diagrama de Clases:
 
-````
+````mermaid
 classDiagram
     class Coche {
         String: matricula
@@ -34,9 +34,9 @@ classDiagram
           +cambiarVelocidad(String, Integer)
           +getVelocidad(String)
       }
-    
+  
       class IU { mostrarVentana()}
-    
+  
       class Dialog { 
         +mostrarVelocidad(String, Integer) 
         +mostrarCoche(Coche, String)  
