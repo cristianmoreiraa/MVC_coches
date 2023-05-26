@@ -15,5 +15,6 @@ public class Dialog extends JDialog{
         dialogo.pack();
         dialogo.eVelocidad.setText(mensajito);
         dialogo.setVisible(true);
+        dialogo.setLocationRelativeTo(null);
     }
 }
