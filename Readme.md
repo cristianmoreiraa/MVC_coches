@@ -6,10 +6,13 @@ Esta aplicación trabaja con objetos de coche, permite modificar y mostrar la ve
 
 En esta rama se han añadido los eventos en la interfaz de usuario (IU).
 
+---
 
-### Diagrama de Clases:
 
-````mermaid
+
+### Diagrama de clases:
+
+```mermaid
 classDiagram
     class Coche {
         String: matricula
@@ -34,9 +37,9 @@ classDiagram
           +cambiarVelocidad(String, Integer)
           +getVelocidad(String)
       }
-  
+    
       class IU { mostrarVentana()}
-  
+    
       class Dialog { 
         +mostrarVelocidad(String, Integer) 
         +mostrarCoche(Coche, String)  
@@ -46,16 +49,20 @@ classDiagram
     Model "1" *-- "1..n" Coche : asociación
     View "1" *-- "1" IU : asociación
     View "1" *-- "1" Dialog : asociación
-```
-````
 
-```## Evento en la Vista
+```
+
+---
+
+
+
+## Evento en la Vista
 
 Cuando ocurre un evento en la vista, el controlador debe ser notificado. Es importante tener en cuenta que en el MVC estricto, la vista no se comunica directamente con el modelo.
 
 En el listener del botón, llamamos al controlador y este, a su vez, llama al modelo. Después de recibir los datos del modelo, el controlador llama a la vista.
 
-````mermaid
+```mermaid
 sequenceDiagram
     actor usuario
     participant View
@@ -72,14 +79,14 @@ sequenceDiagram
     Controller->>View: ¡OK, coche creado!
     deactivate Controller
     View-->>usuario: ¡Tu coche se creó!
+
 ```
-````
 
-Lo mismo ocurre con los métodos para subir velocidad, bajar velocidad y ver coche, cambiando el texto por el correspondiente a cada método.
+Pasa lo mismo con los métodos subir velocidad, bajar velocidad y ver coche pero cambiando el texto por el respectivo de esos métodos.
 
-Ahora, en la parte de la arquitectura de la vista, hay tres clases:
+Ahora la parte de la Arquitectura de la vista, son tres clases:
 
-````mermaid
+```mermaid
 sequenceDiagram
     autonumber
     actor usuario
@@ -104,7 +111,8 @@ sequenceDiagram
     View-->>-Dialog: mostrarVelocidad()
 
 ```
-````
+
+
 
 Aquí, al igual que en el otro esquema, ocurre exactamente lo mismo con los otros métodos, pero con las llamadas correspondientes a cada método.
 
@@ -114,20 +122,23 @@ En esta rama, se ha implementado la funcionalidad de buscar coches. Para ello, s
 
 Este método obtiene el coche mediante un auxiliar del método "getCoche" del modelo. A continuación, llama a la vista para mostrar el coche.
 
-En la vista, se ha creado un método llamado "muestraCoche" que recibe el auxiliar del coche del controlador y la matrícula. Aquí se verifica si el auxiliar es nulo, y en caso de ser así, muestra un mensaje a través del diálogo indicando que no existe ningún coche con esa matrícula. En caso de que el coche exista, se muestra toda la información del coche mediante el diálogo.
+En la vista, se ha creado un método llamado "muestraCoche" que recibe el auxiliar del coche del controlador y la matrícula. Aquí se verifica si el auxiliar es nulo, y en caso de ser así, muestra un mensaje a través del diálogo indicando que no existe ningún coche con esa matrícula. En caso de que el coche exista, se muestra toda la información del coche mediante el diálogo
 
 ---
 
 ## Pasos para crear el observador
 
 1. Modelo
+
    * Extender de `Observable`
    * En el método donde se produce el cambio (en este caso, en "subirVelocidad" y "bajarVelocidad"):
      * Llamar a `setChanged()`
      * Notificar al observador mediante `notifyObservers(valor)`, en este caso: `notifyObservers(getCoche(matricula))`
-2. Crear una clase que actúe como observador, implementando la interfaz `Observer` (ObsExceso en este ejemplo)
+3. Crear una clase que actúe como observador, implementando la interfaz `Observer` (ObsExceso en este ejemplo)
+
    * Definir el método `update()`
-3. Controlador
+4. Controlador
+
    * Instanciar el observador definido en el punto anterior
    * Agregar este observador al objeto observado mediante `addObserver()`
 
@@ -135,9 +146,9 @@ En la vista, se ha creado un método llamado "muestraCoche" que recibe el auxili
 
 ## Evento en la Vista con el Observador
 
-Este sería el diagrama de secuencia explicado de forma general:
+Este sería el diagrama de secuencias explicado de forma general
 
-````mermaid
+```mermaid
 sequenceDiagram
     actor usuario
     participant View
@@ -167,16 +178,17 @@ sequenceDiagram
     View-->usuario: ¡Tu coche ha cambiado de velocidad! (si la velocidad supera los 120 km/h, se muestra una advertencia)
 
 ```
-````
+
+---
 
 ## Evento con Observador pero con los nombres de los métodos
 
-Este es el diagrama de secuencia explicado de forma más específica:
+Este es el diagrama de secuencia explicado de forma más específica.
 
-````mermaid
+```mermaid
 sequenceDiagram
     autonumber
-    actor usuario  
+    actor usuario      
     participant Controller
     participant Model
     participant ObsExceso
@@ -206,4 +218,6 @@ sequenceDiagram
     View-->>-Dialog: mostrarVelocidad()
 
 ```
+
+
 ````
