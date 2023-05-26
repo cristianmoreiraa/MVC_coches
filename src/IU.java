@@ -39,5 +39,6 @@ public class IU {
         frame.setDefaultCloseOperation(3);
         frame.pack();
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 }
