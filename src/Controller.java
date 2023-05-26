@@ -2,55 +2,56 @@ public class Controller {
     static Model miModelo = new Model();
     static View miVista = new View();
 
+    /**
+     * Método principal que inicia la aplicación.
+     * Crea un objeto de tipo ObsExceso y lo añade como observador al modelo.
+     * Crea la ventana de la interfaz de usuario.
+     * @param args los argumentos de la línea de comandos.
+     */
     public static void main(String[] args) {
-        //creas un objeto del observer creado para, seguidamente poder añadirlo al model y que funcione
         ObsExceso miObserver = new ObsExceso();
         miModelo.addObserver(miObserver);
         IU.crearVentana();
     }
 
     /**
-     * Método para crear un nuevo coche
-     * @param modelo -> modelo del coche
-     * @param matricula -> matricula que tiene el coche
+     * Método para crear un nuevo coche.
+     * Crea un coche en el modelo y muestra la velocidad en la vista.
+     * @param modelo el modelo del coche.
+     * @param matricula la matrícula del coche.
      */
     public static void crearCoche(String modelo, String matricula){
-        //Recoge el coche del model y lo guarda en una auxiliar
-        Coche aux = miModelo.crearCoche(modelo,matricula);
-        //si el auxiliar no es nulo llama a la vista para que muestre la velocidad
-        if(aux!=null){
+        Coche aux = miModelo.crearCoche(modelo, matricula);
+        if(aux != null){
             miVista.muestraVelocidad(aux.matricula, aux.velocidad);
         }
     }
 
     /**
-     * Método bajar velocidad de un coche
-     * @param matricula -> matricula del coche a disminuir su velocidad
+     * Método para disminuir la velocidad de un coche.
+     * Llama al método bajarVelocidad del modelo.
+     * @param matricula la matrícula del coche.
      */
     public static void bajarVelocidad(String matricula){
-        //Llama al método bajar velocidad del model
         miModelo.bajarVelocidad(matricula);
     }
 
     /**
-     * Método aumentar velocidad de un coche
-     * @param matricula -> matricula del coche a aumentar su velocidad
+     * Método para aumentar la velocidad de un coche.
+     * Llama al método subirVelocidad del modelo.
+     * @param matricula la matrícula del coche.
      */
     public static void aumentarVelocidad(String matricula){
-        //Llama al método subir velocidad del model
         miModelo.subirVelocidad(matricula);
     }
 
     /**
-     * Método buscar coche que muestre el coche (si existe)
-     * o que muestre que no haya coche
-     * @param matricula -> matricula del coche
-     * Llama al metodo getCoche del model y al muestraCoche de la vista
+     * Método para buscar un coche y mostrarlo en la vista.
+     * Llama al método getCoche del modelo y al método muestraCoche de la vista.
+     * @param matricula la matrícula del coche.
      */
     public static void buscarCoche(String matricula){
-        //recoge el coche del modelo
         Coche aux = miModelo.getCoche(matricula);
-        //llama a la vista para que muestre el coche
         miVista.muestraCoche(aux, matricula);
     }
 }
